@@ -1,19 +1,14 @@
 'use client'
 
 import { AnimatePresence, motion } from 'framer-motion'
-import { FileCheck2, Menu, Sun, X } from 'lucide-react'
+import { FileCheck2, Menu, X } from 'lucide-react'
 import Link from 'next/link'
 import { useState } from 'react'
 import ModeToggle from './mode-toggle'
-import { useTheme } from 'next-themes'
 
 export function Header () {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
-  const { theme, setTheme } = useTheme()
 
-  const ThemeToggle = () => {
-    setTheme(theme === 'dark' ? 'light' : 'dark')
-  }
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen)
 
   return (
@@ -21,18 +16,18 @@ export function Header () {
       initial={{ y: -20, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.5 }}
-      className='w-full px-4 py-4 flex justify-center items-center'
+      className='w-full px-4 py-4 flex justify-center items-center fixed z-40'
     >
-      <div className='relative max-w-5xl bg-blue-500/10 p-3  rounded-lg w-full'>
-        <div className='absolute top-2 left-2 size-1 bg-blue-500/40 rounded-full' />
-        <div className='absolute top-2 right-2 size-1 bg-blue-500/40 rounded-full' />
-        <div className='absolute bottom-2 left-2 size-1 bg-blue-500/40 rounded-full' />
-        <div className='absolute bottom-2 right-2 size-1 bg-blue-500/40 rounded-full' />
+      <div className='relative max-w-5xl bg-blue-500/10 p-2  rounded-lg w-full'>
+        <div className='absolute top-1 left-1 size-1 bg-blue-500/40 rounded-full' />
+        <div className='absolute top-1 right-1 size-1 bg-blue-500/40 rounded-full' />
+        <div className='absolute bottom-1 left-1 size-1 bg-blue-500/40 rounded-full' />
+        <div className='absolute bottom-1 right-1 size-1 bg-blue-500/40 rounded-full' />
 
         <div className='max-w-5xl bg-white dark:bg-zinc-900 p-1 mx-auto rounded-lg flex items-center justify-between'>
           <Link href='/' className='flex items-center space-x-2'>
             <div className='size-8 flex justify-center items-center rounded bg-gradient-to-br from-[#6366F1] to-[#8B5CF6]' >
-            <FileCheck2 />
+            <FileCheck2 className='text-white' />
             </div>
           </Link>
           <nav className='hidden md:flex text-gray-600 dark:text-gray-300 items-center space-x-8'>

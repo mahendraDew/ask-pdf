@@ -1,21 +1,13 @@
-'use client'
 
-import { useState } from 'react'
+"use client"
+
 import { motion } from 'framer-motion'
-import { useTheme } from 'next-themes'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
-import PDFDropzone from '@/components/PDFDropzone'
 import ModeToggle from '@/components/mode-toggle'
 // import  ModeToggle  from '@/compoenents/theme-stolkhoe'
 
 export default function Home() {
-  const [isDragActive, setIsDragActive] = useState(false)
-  const { theme, setTheme } = useTheme()
-
-  const ThemeToggle = () => {
-    setTheme(theme === 'dark' ? 'light' : 'dark')
-  }
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-4 transition-colors duration-200 bg-background text-foreground">
@@ -62,12 +54,18 @@ export default function Home() {
         transition={{ duration: 0.5, delay: 0.8 }}
         className="w-full max-w-2xl"
       >
+        {/* <Card
+          className={`p-8 transition-shadow duration-200
+             ${isDragActive ? 'shadow-lg' : '' }
+          `}
+        > */}
         <Card
-          className={`p-8 transition-shadow duration-200 ${
-            isDragActive ? 'shadow-lg' : ''
-          }`}
+          className={`p-8 transition-shadow duration-200
+          `}
         >
-          <PDFDropzone setIsDragActive={setIsDragActive} />
+          <div>
+            dropzone
+          </div>
         </Card>
       </motion.div>
     </div>
