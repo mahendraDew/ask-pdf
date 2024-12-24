@@ -1,5 +1,5 @@
 'use client'
-import { Header } from '@/components/Header'
+// import { Header } from '@/components/Header'
 import { Footer } from '@/components/Footer'
 import { Quintessential } from 'next/font/google'
 import Image from 'next/image'
@@ -21,6 +21,7 @@ const quintessential = Quintessential({
 })
 
 import { ReactNode } from 'react'
+import Link from 'next/link'
 
 interface AnimatedSectionProps {
   children: ReactNode
@@ -45,11 +46,12 @@ const AnimatedSection = ({ children, delay = 0 }: AnimatedSectionProps) => {
 
 export default function Home () {
   return (
-    <div className='min-h-screen w-full flex flex-col bg-gradient-radial from-blue-400 via-blue-300 to-transparent'>
-      <Header />
+    <div className='h-full w-full flex flex-col'>
+      {/* <div className='min-h-screen w-full flex flex-col bg-gradient-radial from-blue-400 via-blue-300  to-transparent'> */}
+      {/* <Header /> */}
 
-      <main className='flex-1 flex flex-col items-center justify-center px-4 py-16 md:py-24 '>
-        <div className='w-full max-w-3xl mx-auto text-center space-y-32'>
+      <main className='flex-1  flex flex-col items-center justify-center '>
+        <div className='w-full max-w-3xl mx-auto text-center space-y-28 '>
           <AnimatedSection>
             <div className='w-full mt-20 flex justify-center items-center'>
               <div className='relative flex justify-center gap-2 bg-blue-500/10 text-blue-500 p-2 rounded-lg'>
@@ -68,7 +70,7 @@ export default function Home () {
           </AnimatedSection>
 
           <AnimatedSection>
-            <div className='relative flex flex-col items-center justify-center gap-10'>
+            <div className='relative flex flex-col items-center  justify-center gap-10'>
               <div className='flex gap-7 flex-col'>
                 <h1
                   className={`text-4xl md:text-7xl font-normal tracking-tight text-gray-900 dark:text-white`}
@@ -83,12 +85,16 @@ export default function Home () {
                 </p>
               </div>
               <div className='flex justify-center items-center gap-5'>
+                <Link href={"/signin"}>
                 <Button className='bg-blue-500/80 hover:bg-blue-600 text-white'>
                   Get Started
                 </Button>
+                </Link>
+                <Link href={"/chats"}>
                 <Button variant='outline' className='border-blue-500/50'>
                   Chats
                 </Button>
+                </Link>
               </div>
 
               <div className='absolute top-0 -z-10 max-h-full max-w-screen-lg w-full h-full blur-2xl'>

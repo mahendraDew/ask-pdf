@@ -1,10 +1,12 @@
 'use client'
 
 import { AnimatePresence, motion } from 'framer-motion'
-import { FileCheck2, Menu, X } from 'lucide-react'
+import { FileCheck2, FilePlus2, Menu, X } from 'lucide-react'
 import Link from 'next/link'
 import { useState } from 'react'
 import ModeToggle from './mode-toggle'
+import { SignedIn, UserButton } from '@clerk/nextjs'
+import { Button } from './ui/button'
 
 export function Header () {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -16,55 +18,42 @@ export function Header () {
       initial={{ y: -20, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.5 }}
-      className='w-full px-4 py-4 flex justify-center items-center fixed z-40'
+      className='w-full px-1 py-1 flex justify-center items-center z-40'
     >
-      <div className='relative max-w-5xl bg-blue-500/10 p-2  rounded-lg w-full'>
-        <div className='absolute top-1 left-1 size-1 bg-blue-500/40 rounded-full' />
-        <div className='absolute top-1 right-1 size-1 bg-blue-500/40 rounded-full' />
-        <div className='absolute bottom-1 left-1 size-1 bg-blue-500/40 rounded-full' />
-        <div className='absolute bottom-1 right-1 size-1 bg-blue-500/40 rounded-full' />
-
-        <div className='max-w-5xl bg-white dark:bg-zinc-900 p-1 mx-auto rounded-lg flex items-center justify-between'>
-          <Link href='/' className='flex items-center space-x-2'>
-            <div className='size-8 flex justify-center items-center rounded bg-gradient-to-br from-[#6366F1] to-[#8B5CF6]' >
+      <div className='w-full bg-blue-400/20 p-1 mx-auto rounded-lg flex items-center justify-between'>
+        <Link href='/' className='flex items-center space-x-2'>
+          <div className='size-8 flex justify-center items-center rounded bg-gradient-to-br from-[#6366F1] to-[#8B5CF6]'>
             <FileCheck2 className='text-white' />
-            </div>
-          </Link>
-          <nav className='hidden md:flex text-gray-600 dark:text-gray-300 items-center space-x-8'>
-            {/* <Link
-              href='#'
-              className='text-sm  hover:text-gray-900 dark:hover:text-gray-50 '
-            >
-              Updates
+          </div>
+        </Link>
+        <nav className='hidden md:flex text-gray-600 dark:text-gray-300 items-center space-x-8'>
+          
+          <div>
+            <Link href={'/chats/upload'}><Button variant='outline'>
+              <FilePlus2 />
+            </Button>
             </Link>
-            <Link
-              href='#'
-              className='text-sm  hover:text-gray-900  dark:hover:text-gray-50'
-            >
-              FAQ
-            </Link>
-            <Link
-              href='#'
-              className='text-sm  hover:text-gray-900  dark:hover:text-gray-50'
-            >
-              Contact us
-            </Link> */}
-            {/* <button className='size-8 flex items-center justify-center rounded-full bg-white shadow-sm'> */}
-            <ModeToggle />
+          </div>
+          <ModeToggle />
+          <div>
+            <SignedIn>
+            <UserButton />
+            </SignedIn>
+          </div>
+          
 
-            {/* </button> */}
-          </nav>
-          <button
-            className='md:hidden size-8 flex items-center justify-center rounded-full bg-white dark:bg-neutral-900 shadow-sm'
-            onClick={toggleMenu}
-          >
-            {isMenuOpen ? (
-              <X className='size-4 text-gray-800 dark:text-gray-300' />
-            ) : (
-              <Menu className='size-4 text-gray-800 dark:text-gray-300' />
-            )}
-          </button>
-        </div>
+        </nav>
+        <button
+          className='md:hidden size-8 flex items-center justify-center rounded-full bg-white dark:bg-neutral-900 shadow-sm'
+          onClick={toggleMenu}
+        >
+          {isMenuOpen ? (
+            <X className='size-4 text-gray-800 dark:text-gray-300' />
+          ) : (
+            <Menu className='size-4 text-gray-800 dark:text-gray-300' />
+          )}
+        </button>
+      </div>
 
       <AnimatePresence>
         {isMenuOpen && (
@@ -76,31 +65,11 @@ export function Header () {
             className='absolute top-full z-10 left-0 right-0 bg-white dark:bg-zinc-900 shadow-lg rounded-lg overflow-hidden'
           >
             <nav className='flex flex-col justify-center items-center py-4 text-gray-600 dark:text-gray-300 '>
-              {/* <Link
-                href='#'
-                className='px-4 py-2 text-sm  hover:bg-gray-100'
-              >
-                Updates
-              </Link>
-              <Link
-                href='#'
-                className='px-4 py-2 text-sm  hover:bg-gray-100'
-              >
-                FAQ
-              </Link>
-              <Link
-                href='#'
-                className='px-4 py-2 text-sm  hover:bg-gray-100'
-              >
-                Contact us
-              </Link> */}
-             <ModeToggle />
+              <ModeToggle />
             </nav>
           </motion.div>
         )}
       </AnimatePresence>
-      </div>
-
     </motion.header>
   )
 }
