@@ -22,6 +22,7 @@ const quintessential = Quintessential({
 
 import { ReactNode } from 'react'
 import Link from 'next/link'
+import ModeToggle from '@/components/mode-toggle'
 
 interface AnimatedSectionProps {
   children: ReactNode
@@ -49,7 +50,9 @@ export default function Home () {
     <div className='h-full w-full flex flex-col'>
       {/* <div className='min-h-screen w-full flex flex-col bg-gradient-radial from-blue-400 via-blue-300  to-transparent'> */}
       {/* <Header /> */}
-
+      <div className=' w-full h-12 fixed flex justify-end px-7 items-center'>
+        <ModeToggle />
+      </div>
       <main className='flex-1  flex flex-col items-center justify-center '>
         <div className='w-full max-w-3xl mx-auto text-center space-y-28 '>
           <AnimatedSection>
