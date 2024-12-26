@@ -25,7 +25,7 @@ export default function PDfCards () {
       const res = await axios.get('/api/pdfs')
       const data = res.data
       // const data: PDF[] = await res.json();
-      console.log('data:', data)
+      // console.log('data:', data)
       setPdfs(data)
       setLoading(false)
     } catch (error) {

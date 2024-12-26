@@ -1,3 +1,4 @@
+import { loadPDFintoPinecone } from '@/lib/pinecone'
 import { NextResponse } from 'next/server'
 
 export async function POST (req: Request) {
@@ -8,7 +9,10 @@ export async function POST (req: Request) {
     console.log('fileId:', fileId)
     console.log('fileName:', fileName)
 
-    return NextResponse.json({ msg: 'sab thik' })
+    const pages = await loadPDFintoPinecone(fileId);
+    
+    
+    return NextResponse.json({ pages })
   } catch (error) {
     console.error(error)
     return NextResponse.json({ msg: 'Internal server error' }, { status: 500 })

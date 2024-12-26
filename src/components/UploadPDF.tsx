@@ -44,18 +44,18 @@ export default function UploadPDF () {
         const res = await axios.post('/api/upload-pdf', formData)
         const resData = res.data
         console.log('res:', res)
-        if (res.status === 200 || res.statusText === 'OK') {
-          // fetchPDFs(); // Refresh the list after upload
-          // router.push('/chats/[id])
-          router.push(`/chats/${resData.fileId}`)
-        }
+        // if (res.status === 200 || res.statusText === 'OK') {
+        //   // fetchPDFs(); // Refresh the list after upload
+        //   // router.push('/chats/[id])
+        //   router.push(`/chats/${resData.fileId}`)
+        // }
         if (!resData?.fileId || !resData?.fileName) {
           toast.error('Something went wrong')
           return;
         }
         mutate(resData, {
           onSuccess: data => {
-            console.log(data)
+            console.log("ye data hai:",data)
           },
           onError: err => {
             console.log(err)
