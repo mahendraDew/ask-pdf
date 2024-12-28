@@ -33,7 +33,7 @@ export default function UploadPDF () {
       if (file.size > 5 * 1024 * 1024) {
         //max 5mb
         toast.error('File is too large!')
-        return;
+        return
       }
       //backend hit:
       setLoading(true)
@@ -46,20 +46,20 @@ export default function UploadPDF () {
         console.log('res:', res)
         // if (res.status === 200 || res.statusText === 'OK') {
         //   // fetchPDFs(); // Refresh the list after upload
-        //   // router.push('/chats/[id])
         //   router.push(`/chats/${resData.fileId}`)
         // }
         if (!resData?.fileId || !resData?.fileName) {
           toast.error('Something went wrong')
-          return;
+          return
         }
         mutate(resData, {
-          onSuccess: data => {
-            console.log("ye data hai:",data)
+          onSuccess: ({ chat_id }) => {
+            toast.success(`Chat created!: ${chat_id}`)
+            router.push(`/chats/${chat_id}`)
           },
           onError: err => {
-            console.log(err)
             toast.error('Error Creating chat')
+            console.error(err)
           }
         })
       } catch (error) {
