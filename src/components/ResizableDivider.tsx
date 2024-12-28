@@ -39,8 +39,8 @@ const ResizableDivider: React.FC<ResizableDividerProps> = ({ onResize }) => {
     <div
       className="w-2 bg-gray-300 cursor-col-resize hover:bg-gray-400 transition-colors flex justify-center items-center"
       onMouseDown={handleMouseDown}
-    ><span className='select-none'>||</span></div>
-  )
+      ><span className='select-none'>||</span></div>
+    )
 }
 
 export default ResizableDivider

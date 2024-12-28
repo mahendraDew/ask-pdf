@@ -22,14 +22,14 @@ const ChatLayout = () => {
   }
 
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col h-full bg-gray-200">
       <div className="flex-grow overflow-auto p-4">
         {messages.map((message, index) => (
           <div
             key={index}
             className={`mb-4 p-2 rounded-lg ${
               message.sender === 'user' ? 'bg-blue-100 ml-auto' : 'bg-gray-100'
-            } max-w-[70%]`}
+            } max-w-[90%] md:max-w-[70%]`}
           >
             {message.text}
           </div>

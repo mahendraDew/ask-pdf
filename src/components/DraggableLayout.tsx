@@ -165,7 +165,7 @@
 
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import PDFRenderer from '@/components/PDFRenderer'
 
 import ResizableDivider from '@/components/ResizableDivider'
@@ -189,21 +189,42 @@ export default function DashboardPage({
   chat: ChatProp
 }) {
   const [leftWidth, setLeftWidth] = useState(50) // 50% initial width
+  const [isMobile, setIsMobile] = useState(false)
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768) // Consider mobile if width is less than 768px
+    }
+
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [])
 
   const handleResize = (newLeftWidth: number) => {
-    const containerWidth = window.innerWidth
-    const newLeftWidthPercentage = (newLeftWidth / containerWidth) * 100
-    setLeftWidth(newLeftWidthPercentage)
+    if (!isMobile) {
+      const containerWidth = window.innerWidth
+      const newLeftWidthPercentage = (newLeftWidth / containerWidth) * 100
+      setLeftWidth(newLeftWidthPercentage)
+    }
   }
 
+
   return (
-    <div className="min-h-screen w-full  flex flex-col border p-2">
-      <main className="flex-grow flex mt-12 border">
-        <div style={{ width: `${leftWidth}%` }} className="h-[calc(100vh-7rem)]">
-          <PDFRenderer />
+    <div className="min-h-screen w-full  flex flex-col border p-2 pt-3">
+     <main className="flex-grow flex flex-col md:flex-row mt-12 border ">
+        <div 
+          style={{ width: isMobile ? '100%' : `${leftWidth}%` }} 
+          className="h-[calc(50vh-3.5rem)] md:h-[calc(100vh-7rem)]"
+        >
+          {/* <PDFViewer /> */}
+          <PDFRenderer src={chat.pdfUrl} />
         </div>
-        <ResizableDivider onResize={handleResize} />
-        <div style={{ width: `${100 - leftWidth}%` }} className="h-[calc(100vh-7rem)]">
+        {!isMobile && <ResizableDivider onResize={handleResize} />}
+        <div 
+          style={{ width: isMobile ? '100%' : `${100 - leftWidth}%` }} 
+          className="h-[calc(50vh-3.5rem)] md:h-[calc(100vh-7rem)]"
+        >
           <ChatLayout />
         </div>
       </main>
