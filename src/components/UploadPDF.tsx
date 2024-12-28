@@ -19,6 +19,9 @@ export default function UploadPDF () {
       fileId: string
       fileName: string
     }) => {
+      console.log("creating a chat room")
+      console.log("fileId:", fileId)
+      console.log("fileName:", fileName)
       const res = await axios.post('/api/create-chat', { fileId, fileName })
 
       return res.data
@@ -55,7 +58,7 @@ export default function UploadPDF () {
         mutate(resData, {
           onSuccess: ({ chat_id }) => {
             toast.success(`Chat created!: ${chat_id}`)
-            router.push(`/chats/${chat_id}`)
+            router.push(`/chats/${resData?.fileId}`)
           },
           onError: err => {
             toast.error('Error Creating chat')

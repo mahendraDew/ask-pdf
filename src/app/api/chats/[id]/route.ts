@@ -8,6 +8,7 @@ export async function GET (
   req: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
+    console.log("req to pahuch rha hai but")
   const chat_id = (await params).id
   const { userId } = await auth()
 
@@ -16,21 +17,22 @@ export async function GET (
   }
 
   try {
-    const chat = await client.chats.findUnique({
-      where: { id: parseInt(chat_id) }
+    const chat = await client.chats.findFirst({
+      where: { id: parseInt(chat_id), userId: userId }
     })
 
-
     if (!chat) {
-        return NextResponse.json({ msg: 'Chat not found' }, { status: 404 })
-      }
+      return NextResponse.json({ msg: 'Chat not found' }, { status: 404 })
+    }
 
     console.log('chat_details: ', chat)
 
     return NextResponse.json({ chat }, { status: 200 })
-
   } catch (error) {
     console.error(error)
-    return NextResponse.json({ msg: 'Internal server error, error in getting chat data' }, { status: 500 })
+    return NextResponse.json(
+      { msg: 'Internal server error, error in getting chat data' },
+      { status: 500 }
+    )
   }
 }

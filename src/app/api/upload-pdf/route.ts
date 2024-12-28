@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import connectToDatabase from '@/lib/db/mongo/mongoose';
 import PDFModel from '@/model/pdfschema';
+import { auth } from '@clerk/nextjs/server';
 
 export async function GET() {
   return NextResponse.json({msg: "this is /upload get reqs"})
@@ -8,6 +9,7 @@ export async function GET() {
 
 export async function POST(req: NextRequest) {
   await connectToDatabase();
+  const {userId} = await auth();
   //TODO: Parse the multipart/form-data using multer
 
   const formData = await req.formData();
@@ -24,6 +26,7 @@ export async function POST(req: NextRequest) {
       data: buffer,
       contentType: file.type,
       size: file.size,
+      userId: userId
     });
 
     const savedPDF = await pdf.save();

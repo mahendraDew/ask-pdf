@@ -1,12 +1,16 @@
 import { NextResponse } from 'next/server'
 import connectToDatabase from '@/lib/db/mongo/mongoose'
 import PDFModel from '@/model/pdfschema'
+import { auth } from '@clerk/nextjs/server'
+import { redirect } from 'next/navigation';
 
 export async function GET () {
+  const {userId} = await auth();
+ 
   try {
     await connectToDatabase()
 
-    const pdfs = await PDFModel.find({}).lean()
+    const pdfs = await PDFModel.find({userId: userId}).lean()
 
     return NextResponse.json(pdfs)
   } catch (error) {

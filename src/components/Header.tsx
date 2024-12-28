@@ -18,7 +18,7 @@ export function Header () {
       initial={{ y: -20, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.5 }}
-      className='w-full px-1 py-1 flex justify-center items-center z-40'
+      className='w-full px-2 py-2 flex justify-center items-center z-40 fixed'
     >
       <div className='w-full bg-blue-400/20 p-1 mx-auto rounded-lg flex items-center justify-between'>
         <Link href='/' className='flex items-center space-x-2'>
