@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from 'next/font/google'
 import { ThemeProvider } from '@/components/theme-provider'
 import { ClerkProvider } from '@clerk/nextjs'
 import { Toaster } from "@/components/ui/sonner"
+import { Analytics } from '@vercel/analytics/next';
 
 import './globals.css'
 import Providers from '@/components/Providers'
@@ -40,6 +41,7 @@ export default function RootLayout ({
               disableTransitionOnChange
             >
               {children}
+              <Analytics />
               <Toaster position="top-center" />
             </ThemeProvider>
           </body>

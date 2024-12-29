@@ -8,7 +8,6 @@
     "start": "next start",
     "lint": "next lint",
     "postinstall": "prisma generate"
-
   },
   "dependencies": {
     "@ai-sdk/google": "^1.0.12",
@@ -26,6 +25,7 @@
     "@tanstack/react-query": "^5.62.10",
     "@types/md5": "^2.3.5",
     "@types/mongoose": "^5.11.96",
+    "@vercel/analytics": "^1.4.1",
     "ai": "^4.0.22",
     "axios": "^1.7.9",
     "class-variance-authority": "^0.7.1",
