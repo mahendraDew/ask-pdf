@@ -6,7 +6,7 @@ import { useDropzone } from 'react-dropzone'
 import axios from 'axios'
 import { useRouter } from 'next/navigation'
 import { useMutation } from '@tanstack/react-query'
-import toast from 'react-hot-toast'
+import { toast } from "sonner"
 
 export default function UploadPDF () {
   const router = useRouter()
@@ -57,7 +57,7 @@ export default function UploadPDF () {
         }
         mutate(resData, {
           onSuccess: ({ chat_id }) => {
-            toast.success(`Chat created!: ${chat_id}`)
+            toast.success(`Chat created!`)
             router.push(`/chats/${resData?.fileId}`)
           },
           onError: err => {

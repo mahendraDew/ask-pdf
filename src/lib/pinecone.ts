@@ -55,6 +55,8 @@ export async function loadPDFintoPinecone (fileId: string) {
      
     pineconeIndex.namespace(namespace).upsert(vectors)
 
+    // vector inserted
+    console.log("vector inserted successfully")
     return documents[0];
 
   } catch (error) {
