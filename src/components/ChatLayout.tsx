@@ -1,11 +1,17 @@
 'use client'
-import { useState } from 'react'
+import React, { useEffect } from 'react'
 import { useChat } from 'ai/react'
-import { Loader, Send, StopCircle } from 'lucide-react'
-import MessageComponent from './MessageComponent'
-import { Spinnaker } from 'next/font/google'
+import { Loader, Send } from 'lucide-react'
+import ReactMarkdown from 'react-markdown';
 
-const ChatLayout = () => {
+// import remarkGfm from 'remark-gfm'; // Enables GitHub-Flavored Markdown for additional features like tables
+
+type Props = {
+  chatId: number
+  pdfId: string
+}
+
+const ChatLayout = ({ chatId, pdfId }: Props) => {
   const {
     input,
     handleInputChange,
@@ -16,7 +22,10 @@ const ChatLayout = () => {
     reload,
     error
   } = useChat({
-    api: '/api/chat'
+    api: '/api/chat',
+    body: {
+      pdfId
+    }
   })
 
   // const [messages, setMessages] = useState<{ text: string; sender: 'user' | 'bot' }[]>([])
@@ -41,8 +50,18 @@ const ChatLayout = () => {
     }
   }
 
+  useEffect(()=>{
+    const msgContainer = document.getElementById('msg-container')
+    if(msgContainer){
+      msgContainer.scrollTo({
+        top:msgContainer.scrollHeight,
+        behavior:"smooth"
+      })
+    }
+  }, [messages])
+
   return (
-    <div className='flex flex-col h-full bg-gray-200'>
+    <div className='flex flex-col h-full bg-gray-200' id='msg-container'>
       <div className='flex-grow overflow-auto p-4'>
         {/* <MessageComponent messages={messages} isLoading={isLoading} stop={stop} reload={reload}/> */}
 
@@ -53,18 +72,22 @@ const ChatLayout = () => {
               message.role === 'user' ? 'bg-blue-100 ml-auto' : 'bg-gray-100'
             } max-w-[90%] md:max-w-[70%]`}
           >
-            
+             <ReactMarkdown 
+            //  remarkPlugins={[remarkGfm]}
+             >
+              
             {message.content}
+             </ReactMarkdown>
           </div>
         ))}
         {isLoading && (
-              <div>
-                <Loader className='animate-spin w-4 h-4' />
-                {/* <button type='button' onClick={() => stop()}>
+          <div>
+            <Loader className='animate-spin w-4 h-4' />
+            {/* <button type='button' onClick={() => stop()}>
                   <StopCircle className='w-4 h-4'/>
                 </button> */}
-              </div>
-            )}
+          </div>
+        )}
 
         {error && (
           <>

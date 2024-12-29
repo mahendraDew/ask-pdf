@@ -225,7 +225,7 @@ export default function DashboardPage({
           style={{ width: isMobile ? '100%' : `${100 - leftWidth}%` }} 
           className="h-[calc(50vh-3.5rem)] md:h-[calc(100vh-(4.5rem))] border rounded-lg"
         >
-          <ChatLayout />
+          <ChatLayout chatId={chat.id} pdfId={pdfId} />
         </div>
       </main>
     </div>
