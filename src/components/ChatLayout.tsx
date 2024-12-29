@@ -1,7 +1,7 @@
 'use client';
 import React, { useRef, useLayoutEffect } from 'react';
 import { useChat } from 'ai/react';
-import { Loader, Send } from 'lucide-react';
+import { Loader, MessagesSquare, Send } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 
 type Props = {
@@ -44,13 +44,18 @@ const ChatLayout = ({ pdfId }: Props) => {
   };
 
   return (
-    <div className="flex flex-col h-full bg-gray-200">
+    <div className="flex flex-col h-full bg-gray-100">
       {/* Message container */}
       <div
         ref={msgContainerRef}
         className="flex-grow overflow-auto p-4"
         id="msg-container"
-      >
+      >{!messages.length && (
+        <div className="w-full h-full flex flex-col justify-center items-center  text-center text-lg font-semibold">
+          <MessagesSquare className="w-12 h-12 text-gray-500 mb-4" />
+          <div className='text-gray-400'>Ask Questions to pdf</div>
+        </div>
+      )}
         {messages.map((message, index) => (
           <div
             key={index}

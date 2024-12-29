@@ -7,7 +7,7 @@ export async function GET () {
   const {userId} = await auth();
  
   try {
-    await connectToDatabase()
+    await connectToDatabase();
 
     const pdfs = await PDFModel.find({userId: userId}).lean()
 

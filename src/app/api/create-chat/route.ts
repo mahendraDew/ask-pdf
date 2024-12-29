@@ -3,6 +3,7 @@ import { NextResponse } from 'next/server'
 import { PrismaClient } from '@prisma/client'
 import { auth } from '@clerk/nextjs/server'
 
+const hostURL = process.env.HOST;
 const client = new PrismaClient()
 
 export async function POST (req: Request) {
@@ -25,7 +26,7 @@ export async function POST (req: Request) {
       data: {
         fileKey: fileId,
         pdfName: fileName,
-        pdfUrl: `http://localhost:3000/api/pdfs/${fileId}`,
+        pdfUrl: `${hostURL}/api/pdfs/${fileId}`,
         userId: userId
       },
       select: {

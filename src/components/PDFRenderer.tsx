@@ -1,15 +1,11 @@
 'use client'
 
 import * as PDFJS from "pdfjs-dist";
-import type {
-  PDFDocumentProxy,
-  RenderParameters,
-} from "pdfjs-dist/types/src/display/api";
+import type { PDFDocumentProxy, RenderParameters } from "pdfjs-dist/types/src/display/api";
 import { useCallback, useRef, useState, useEffect } from "react";
-import { ChevronLeft, ChevronRight, ZoomIn, ZoomOut } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Loader2, ZoomIn, ZoomOut } from 'lucide-react';
 
-PDFJS.GlobalWorkerOptions.workerSrc =
-  "https://unpkg.com/pdfjs-dist@4.9.155/build/pdf.worker.min.mjs";
+PDFJS.GlobalWorkerOptions.workerSrc = "https://unpkg.com/pdfjs-dist@4.9.155/build/pdf.worker.min.mjs";
 
 export interface PdfProps {
   src: string;
@@ -22,6 +18,7 @@ export default function EnhancedPdfViewer({ src }: PdfProps) {
   const [pdfDoc, setPdfDoc] = useState<PDFDocumentProxy>();
   const [currentPage, setCurrentPage] = useState(1);
   const [scale, setScale] = useState(1.5);
+  const [isLoading, setIsLoading] = useState(true); // New state for loader
 
   const renderPage = useCallback(
     (pageNum: number, pdf = pdfDoc) => {
@@ -45,7 +42,9 @@ export default function EnhancedPdfViewer({ src }: PdfProps) {
 
         // Start rendering the new page
         renderTaskRef.current = page.render(renderContext);
-        renderTaskRef.current.promise.catch((error) => {
+        renderTaskRef.current.promise.then(() => {
+          setIsLoading(false); // Hide loader once the page is rendered
+        }).catch((error) => {
           if (error?.name !== "RenderingCancelledException") {
             console.error("Error rendering PDF:", error);
           }
@@ -61,12 +60,15 @@ export default function EnhancedPdfViewer({ src }: PdfProps) {
 
   useEffect(() => {
     const loadingTask = PDFJS.getDocument(src);
+    setIsLoading(true); // Show loader when starting to load PDF
     loadingTask.promise.then(
       (loadedDoc) => {
         setPdfDoc(loadedDoc);
+        setIsLoading(false); // Hide loader once the PDF is loaded
       },
       (error) => {
         console.error("Error loading PDF:", error);
+        setIsLoading(false); // Hide loader on error
       }
     );
   }, [src]);
@@ -78,44 +80,54 @@ export default function EnhancedPdfViewer({ src }: PdfProps) {
   const zoomOut = () => setScale((prevScale) => Math.max(0.5, prevScale - 0.25));
 
   return (
-    <div className="flex w-full h-full flex-col items-center bg-gray-50 p-4 rounded-lg shadow-md" >
-      <div className="flex justify-between items-center w-full mb-4">
-        <button
-          onClick={prevPage}
-          disabled={currentPage <= 1}
-          className="bg-blue-500/70 hover:bg-blue-500/80 text-white p-2 rounded-full disabled:opacity-50 disabled:cursor-not-allowed"
-        >
-          <ChevronLeft size={24} />
-        </button>
-        <div className="text-lg font-semibold">
-          Page {currentPage} of {pdfDoc?.numPages || '-'}
+    <div className="flex w-full h-full flex-col items-center bg-gray-50 p-4 rounded-lg shadow-md">
+      {isLoading ? (
+        <div className="flex items-center justify-center w-full h-full">
+          <div className="text-center">
+            <Loader2 className="animate-spin w-4 h-4"/>
+          </div>
         </div>
-        <button
-          onClick={nextPage}
-          disabled={currentPage >= (pdfDoc?.numPages ?? -1)}
-          className="bg-blue-500/70 hover:bg-blue-500/80 text-white p-2 rounded-full disabled:opacity-50 disabled:cursor-not-allowed"
-        >
-          <ChevronRight size={24} />
-        </button>
-      </div>
-      <div className="relative flex-grow w-full overflow-auto">
-        <canvas ref={canvasRef} className="mx-auto"></canvas>
-      </div>
-      <div className="flex justify-center items-center mt-4 space-x-4">
-        <button
-          onClick={zoomOut}
-          className="bg-gray-200 text-gray-800 p-2 rounded-full hover:bg-gray-300"
-        >
-          <ZoomOut size={24} />
-        </button>
-        <div className="text-lg font-semibold">{Math.round(scale * 100)}%</div>
-        <button
-          onClick={zoomIn}
-          className="bg-gray-200 text-gray-800 p-2 rounded-full hover:bg-gray-300"
-        >
-          <ZoomIn size={24} />
-        </button>
-      </div>
+      ) : (
+        <>
+          <div className="flex justify-between items-center w-full mb-4">
+            <button
+              onClick={prevPage}
+              disabled={currentPage <= 1}
+              className="bg-blue-500/70 hover:bg-blue-500/80 text-white p-2 rounded-full disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              <ChevronLeft size={24} />
+            </button>
+            <div className="text-lg font-semibold">
+              Page {currentPage} of {pdfDoc?.numPages || '-'}
+            </div>
+            <button
+              onClick={nextPage}
+              disabled={currentPage >= (pdfDoc?.numPages ?? -1)}
+              className="bg-blue-500/70 hover:bg-blue-500/80 text-white p-2 rounded-full disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              <ChevronRight size={24} />
+            </button>
+          </div>
+          <div className="relative flex-grow w-full overflow-auto">
+            <canvas ref={canvasRef} className="mx-auto"></canvas>
+          </div>
+          <div className="flex justify-center items-center mt-4 space-x-4">
+            <button
+              onClick={zoomOut}
+              className="bg-gray-200 text-gray-800 p-2 rounded-full hover:bg-gray-300"
+            >
+              <ZoomOut size={24} />
+            </button>
+            <div className="text-lg font-semibold">{Math.round(scale * 100)}%</div>
+            <button
+              onClick={zoomIn}
+              className="bg-gray-200 text-gray-800 p-2 rounded-full hover:bg-gray-300"
+            >
+              <ZoomIn size={24} />
+            </button>
+          </div>
+        </>
+      )}
     </div>
   );
 }

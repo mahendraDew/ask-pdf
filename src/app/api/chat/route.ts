@@ -23,7 +23,7 @@ export async function POST (req: Request) {
 
     const context = await getContext(lastUserQuery, pdfId)
 
-    console.log("context:", context);
+    // console.log("context:", context);
     // const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!)
     // const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
     // const resultGen = await model.generateContent(prompt);

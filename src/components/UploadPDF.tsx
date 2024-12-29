@@ -7,6 +7,36 @@ import axios from 'axios'
 import { useRouter } from 'next/navigation'
 import { useMutation } from '@tanstack/react-query'
 import { toast } from "sonner"
+import { MultiStepLoader as Loader } from './ui/multi-step-loader'
+
+
+const loadingStates = [
+  {
+    text: "Uploading your PDF...",
+  },
+  {
+    text: "Extracting the content...",
+  },
+  {
+    text: "Processing the details...",
+  },
+  {
+    text: "Spilling the tea...",
+  },
+  {
+    text: "Good things take time...",
+  },
+  {
+    text: "Patience is key...",
+  },
+  {
+    text: "Organizing the data...",
+  },
+  {
+    text: "Almost there...",
+  }
+];
+
 
 export default function UploadPDF () {
   const router = useRouter()
@@ -19,6 +49,7 @@ export default function UploadPDF () {
       fileId: string
       fileName: string
     }) => {
+      setLoading(true);
       console.log("creating a chat room")
       console.log("fileId:", fileId)
       console.log("fileName:", fileName)
@@ -46,7 +77,7 @@ export default function UploadPDF () {
         formData.append('file', file)
         const res = await axios.post('/api/upload-pdf', formData)
         const resData = res.data
-        console.log('res:', res)
+        // console.log('res:', res)
         // if (res.status === 200 || res.statusText === 'OK') {
         //   // fetchPDFs(); // Refresh the list after upload
         //   router.push(`/chats/${resData.fileId}`)
@@ -60,9 +91,11 @@ export default function UploadPDF () {
             toast.success(`Chat created!`)
             console.log("chatID:", chat_id)
             router.push(`/chats/${resData?.fileId}`)
+            // setLoading(false);
           },
           onError: err => {
             toast.error('Error Creating chat')
+            setLoading(false);
             console.error(err)
           }
         })
@@ -76,7 +109,9 @@ export default function UploadPDF () {
   })
 
   return (
-    <div className='p-2 w-full bg-white dark:bg-zinc-600 rounded-xl '>
+    <div className={`p-2 w-full bg-white dark:bg-zinc-600 rounded-xl ${loading && "h-screen"}`}>
+      <Loader loadingStates={loadingStates} loading={loading} duration={2000}/>
+
       <div
         {...getRootProps()}
         className={`border-dashed  border-2 rouned-xl cursor-pointer  py-8 flex justify-center items-center flex-col ${

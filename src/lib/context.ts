@@ -5,12 +5,12 @@ import { getEmbedding } from './embeddings'
 export async function getContext (query: string, fileKey: string) {
   console.log('getting the context')
   const queryEmbedding = await getEmbedding(query)
-  console.log('queryEmbedding:', queryEmbedding)
+  // console.log('queryEmbedding:', queryEmbedding)
   const matches = await getMatchesFromEmbeddings(queryEmbedding, fileKey)
-  console.log('matches:', matches)
+  // console.log('matches:', matches)
 
   const qualifyDocs = matches?.filter(match => match.score && match.score > 0.3)
-  console.log('qualifyingdocs:', qualifyDocs)
+  // console.log('qualifyingdocs:', qualifyDocs)
 
   type Metadata = {
     text: string

@@ -1,12 +1,12 @@
 'use client'
 
 import { AnimatePresence, motion } from 'framer-motion'
-import { FileCheck2, FilePlus2, Menu, X } from 'lucide-react'
+import { FileCheck2, Menu, X } from 'lucide-react'
 import Link from 'next/link'
 import { useState } from 'react'
 import ModeToggle from './mode-toggle'
 import { SignedIn, UserButton } from '@clerk/nextjs'
-import { Button } from './ui/button'
+// import { Button } from './ui/button'
 
 export function Header () {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -28,12 +28,12 @@ export function Header () {
         </Link>
         <nav className='hidden md:flex text-gray-600 dark:text-gray-300 items-center space-x-8'>
           
-          <div>
+          {/* <div>
             <Link href={'/chats/upload'}><Button variant='outline'>
               <FilePlus2 />
             </Button>
             </Link>
-          </div>
+          </div> */}
           <ModeToggle />
           <div>
             <SignedIn>
