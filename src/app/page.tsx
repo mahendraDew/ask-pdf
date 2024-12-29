@@ -63,10 +63,7 @@ export default function Home () {
                 <div className='absolute bottom-1 left-1 size-1 bg-blue-500/40 rounded-full' />
                 <div className='absolute bottom-1 right-1 size-1 bg-blue-500/40 rounded-full' />
                 <span className='inline-flex items-center rounded-lg px-2 py-1 text-xs bg-white shadow-sm'>
-                  Waitlist v1
-                </span>
-                <span className='inline-flex items-center rounded-lg px-2 py-1 text-xs bg-white shadow-sm'>
-                  Coming Soon
+                 v - alpha
                 </span>
               </div>
             </div>
@@ -267,9 +264,11 @@ export default function Home () {
                 </p>
               </div>
               <div className='w-full'>
+                <Link href={'/signin'}>
                 <Button className='bg-blue-500/80 hover:bg-blue-600 text-white'>
                   Try it Now
                 </Button>{' '}
+                </Link>
               </div>
             </div>
           </AnimatedSection>
