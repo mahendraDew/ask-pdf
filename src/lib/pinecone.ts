@@ -8,11 +8,8 @@ import {
 import { PineconeRecord, RecordMetadata } from '@pinecone-database/pinecone'
 import { getEmbedding } from './embeddings'
 import md5 from 'md5'
-import { Vector } from '@pinecone-database/pinecone/dist/pinecone-generated-ts-fetch/db_data'
 import { getPineconeClient } from './pinecone-config'
 import { convertToASCII } from './utils'
-
-
 
 type PDFPageProps = {
   pageContent: string
@@ -36,29 +33,28 @@ export async function loadPDFintoPinecone (fileId: string) {
     const textdata = extractTextFromPDF(pdfBuffer)
 
     //2. extract and split doc
-    console.log("extracting and spliting the doc")
+    console.log('extracting and spliting the doc')
     const documents = await Promise.all(
       (await textdata).map(page => prepareDocument(page))
     )
-    
+
     //3. vectorize this docs
-    console.log("vectorizing the doc")
+    console.log('vectorizing the doc')
     const vectors = await Promise.all(
       documents.flat().map(doc => embedDocument(doc))
     )
-    
+
     //4 . push this vectors to pinecone db
     const client = await getPineconeClient()
     const pineconeIndex = client.Index('askpdf')
-    console.log("inserting vectors into pinecone")
-    const namespace = convertToASCII(fileId) 
-     
+    console.log('inserting vectors into pinecone')
+    const namespace = convertToASCII(fileId)
+
     pineconeIndex.namespace(namespace).upsert(vectors)
 
     // vector inserted
-    console.log("vector inserted successfully")
-    return documents[0];
-
+    console.log('vector inserted successfully')
+    return documents[0]
   } catch (error) {
     console.error('Error processing PDF for Pinecone:', error)
   }
@@ -84,7 +80,8 @@ async function extractTextFromPDF (pdfBuffer: Buffer) {
 // step: 2
 //this will take a single page
 async function prepareDocument (page: PDFPageProps) {
-  let { pageContent, metadata } = page
+  let { pageContent } = page
+  const { metadata } = page
   pageContent = pageContent.replace(/\n/g, '')
   //spiting the doc
   const splitter = new RecursiveCharacterTextSplitter()
@@ -118,7 +115,7 @@ async function embedDocument (doc: Document) {
       metadata: {
         text: doc.metadata.text,
         pageNumber: doc.metadata.pageNumber
-      } 
+      }
     } as PineconeRecord<RecordMetadata>
   } catch (error) {
     console.log('err embedding the doc ', error)

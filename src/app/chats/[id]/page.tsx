@@ -10,8 +10,8 @@
 
 // export default page
 import DraggableComponent from '@/components/DraggableLayout'
-import connectToDatabase from '@/lib/db/mongo/mongoose'
-import PDFModel from '@/model/pdfschema'
+// import connectToDatabase from '@/lib/db/mongo/mongoose'
+// import PDFModel from '@/model/pdfschema'
 import { auth } from '@clerk/nextjs/server'
 import { PrismaClient } from '@prisma/client'
 import { redirect } from 'next/navigation'

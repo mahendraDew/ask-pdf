@@ -18,32 +18,38 @@ export interface PdfProps {
 
 export default function EnhancedPdfViewer({ src }: PdfProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const renderTaskRef = useRef<PDFJS.RenderTask | null>(null); // Use useRef for renderTask
   const [pdfDoc, setPdfDoc] = useState<PDFDocumentProxy>();
   const [currentPage, setCurrentPage] = useState(1);
   const [scale, setScale] = useState(1.5);
-  let renderTask: PDFJS.RenderTask;
 
   const renderPage = useCallback(
     (pageNum: number, pdf = pdfDoc) => {
       const canvas = canvasRef.current;
       if (!canvas || !pdf) return;
+
       pdf.getPage(pageNum).then((page) => {
         const viewport = page.getViewport({ scale });
         canvas.height = viewport.height;
         canvas.width = viewport.width;
+
         const renderContext: RenderParameters = {
           canvasContext: canvas.getContext("2d")!,
           viewport: viewport,
         };
-        try {
-          if (renderTask) {
-            renderTask.cancel();
-          }
-          renderTask = page.render(renderContext);
-          return renderTask.promise;
-        } catch (error) {
-          console.error("Error rendering PDF:", error);
+
+        // Cancel any ongoing rendering task
+        if (renderTaskRef.current) {
+          renderTaskRef.current.cancel();
         }
+
+        // Start rendering the new page
+        renderTaskRef.current = page.render(renderContext);
+        renderTaskRef.current.promise.catch((error) => {
+          if (error?.name !== "RenderingCancelledException") {
+            console.error("Error rendering PDF:", error);
+          }
+        });
       });
     },
     [pdfDoc, scale]
@@ -113,4 +119,3 @@ export default function EnhancedPdfViewer({ src }: PdfProps) {
     </div>
   );
 }
-

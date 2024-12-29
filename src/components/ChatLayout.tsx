@@ -5,18 +5,16 @@ import { Loader, Send } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 
 type Props = {
-  chatId: number;
   pdfId: string;
 };
 
-const ChatLayout = ({ chatId, pdfId }: Props) => {
+const ChatLayout = ({ pdfId }: Props) => {
   const {
     input,
     handleInputChange,
     handleSubmit,
     messages,
     isLoading,
-    stop,
     reload,
     error,
   } = useChat({
@@ -66,7 +64,7 @@ const ChatLayout = ({ chatId, pdfId }: Props) => {
         {isLoading && (
           <div className="flex items-center space-x-2">
             <Loader className="animate-spin w-4 h-4" />
-            <span>Loading...</span>
+            
           </div>
         )}
         {error && (

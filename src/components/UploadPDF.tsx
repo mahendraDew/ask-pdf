@@ -58,6 +58,7 @@ export default function UploadPDF () {
         mutate(resData, {
           onSuccess: ({ chat_id }) => {
             toast.success(`Chat created!`)
+            console.log("chatID:", chat_id)
             router.push(`/chats/${resData?.fileId}`)
           },
           onError: err => {
