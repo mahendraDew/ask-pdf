@@ -212,10 +212,10 @@ export default function DashboardPage({
 
   return (
     <div className="min-h-screen w-full  flex flex-col border p-2 pt-3">
-     <main className="flex-grow flex flex-col md:flex-row mt-12 border ">
+     <main className="flex-grow flex flex-col md:flex-row mt-12 gap-1 ">
         <div 
           style={{ width: isMobile ? '100%' : `${leftWidth}%` }} 
-          className="h-[calc(50vh-3.5rem)] md:h-[calc(100vh-7rem)]"
+          className="h-[calc(50vh-3.5rem)] md:h-[calc(100vh-(4.5rem))] border rounded-lg"
         >
           {/* <PDFViewer /> */}
           <PDFRenderer src={chat.pdfUrl} />
@@ -223,7 +223,7 @@ export default function DashboardPage({
         {!isMobile && <ResizableDivider onResize={handleResize} />}
         <div 
           style={{ width: isMobile ? '100%' : `${100 - leftWidth}%` }} 
-          className="h-[calc(50vh-3.5rem)] md:h-[calc(100vh-7rem)]"
+          className="h-[calc(50vh-3.5rem)] md:h-[calc(100vh-(4.5rem))] border rounded-lg"
         >
           <ChatLayout />
         </div>
