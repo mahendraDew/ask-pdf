@@ -60,7 +60,7 @@ const ChatLayout = ({ pdfId }: Props) => {
           <div
             key={index}
             className={`mb-4 p-2 rounded-lg ${
-              message.role === 'user' ? 'bg-blue-100 ml-auto' : 'bg-gray-100'
+              message.role === 'user' ? 'bg-blue-100 ml-auto' : 'bg-white'
             } max-w-[90%] md:max-w-[70%]`}
           >
             <ReactMarkdown>{message.content}</ReactMarkdown>
