@@ -37,7 +37,7 @@ export default function PDfCards () {
     fetchPDFs() // Fetch PDFs on initial render
   }, [])
   return (
-    <div className=' w-full h-full flex  gap-4 p-5  flex-wrap'>
+    <div className='w-full h-full flex md:justify-center md:items-center lg:justify-start lg:items-start  gap-6 p-2  flex-wrap'>
       {loading ? (
         <div className='w-full h-full flex justify-center items-center'>
           <Loader2 className='animate-spin' />
@@ -51,8 +51,8 @@ export default function PDfCards () {
         </div>
       ) : (
         pdfs.map(pdf => (
-          <Link key={pdf._id} href={`/chats/${pdf._id}`}>
-            <Button className='relative pdf-item w-64 h-80 rounded-lg cursor-pointer bg-gray-200 drop-shadow-md text-gray-400 text-sm md:text-base p-2 flex flex-col justify-between'>
+          <Link key={pdf._id} href={`/chats/${pdf._id}`} className='w-full sm:w-64 h-80'>
+            <Button className='relative pdf-item w-full h-full rounded-lg cursor-pointer bg-gray-200 drop-shadow-md text-gray-400 text-sm md:text-base p-2 flex flex-col justify-between'>
               <p className='w-full text-wrap flex  justify-start items-start text-start'>
                 {pdf.filename}
               </p>

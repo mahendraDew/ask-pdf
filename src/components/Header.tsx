@@ -27,7 +27,6 @@ export function Header () {
           </div>
         </Link>
         <nav className='hidden md:flex text-gray-600 dark:text-gray-300 items-center space-x-8'>
-          
           {/* <div>
             <Link href={'/chats/upload'}><Button variant='outline'>
               <FilePlus2 />
@@ -35,13 +34,11 @@ export function Header () {
             </Link>
           </div> */}
           <ModeToggle />
-          <div>
+          <div className='w-full h-full flex justify-center items-center'>
             <SignedIn>
-            <UserButton />
+              <UserButton />
             </SignedIn>
           </div>
-          
-
         </nav>
         <button
           className='md:hidden size-8 flex items-center justify-center rounded-full bg-white dark:bg-neutral-900 shadow-sm'
@@ -66,6 +63,9 @@ export function Header () {
           >
             <nav className='flex flex-col justify-center items-center py-4 text-gray-600 dark:text-gray-300 '>
               <ModeToggle />
+              <SignedIn>
+                <UserButton />
+              </SignedIn>
             </nav>
           </motion.div>
         )}
