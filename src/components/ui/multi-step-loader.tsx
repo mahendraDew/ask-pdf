@@ -67,9 +67,9 @@ const LoaderCore = ({
               {index <= value && (
                 <CheckFilled
                   className={cn(
-                    "text-black dark:text-white",
+                    "text-blue-500",
                     value === index &&
-                      "text-black dark:text-lime-500 opacity-100"
+                      "text-blue-500 opacity-100"
                   )}
                 />
               )}

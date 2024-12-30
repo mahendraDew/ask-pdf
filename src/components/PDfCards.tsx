@@ -1,7 +1,7 @@
 'use client'
 
 import axios from 'axios'
-import { FileText, Loader2 } from 'lucide-react'
+import { FileText, FileX, Loader2 } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
 import { Button } from './ui/button'
 import Link from 'next/link'
@@ -41,6 +41,13 @@ export default function PDfCards () {
       {loading ? (
         <div className='w-full h-full flex justify-center items-center'>
           <Loader2 className='animate-spin' />
+        </div>
+      ) : !pdfs.length ? (
+        <div className='text-gray-400 flex flex-col justify-center items-center w-full h-full'>
+          <FileX className='w-32 h-32' />
+          <span className='text-sm md:text-md'>
+            You don&apos;t have any pdfs right now
+          </span>
         </div>
       ) : (
         pdfs.map(pdf => (
