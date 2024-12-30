@@ -80,7 +80,7 @@ export default function EnhancedPdfViewer({ src }: PdfProps) {
   const zoomOut = () => setScale((prevScale) => Math.max(0.5, prevScale - 0.25));
 
   return (
-    <div className="flex w-full h-full flex-col items-center bg-gray-50 p-4 rounded-lg shadow-md">
+    <div className="flex w-full h-full flex-col items-center bg-gray-50 dark:bg-neutral-800 p-4 rounded-lg shadow-md">
       {isLoading ? (
         <div className="flex items-center justify-center w-full h-full">
           <div className="text-center">

@@ -62,7 +62,7 @@ const ChatLayout = ({ chatId, pdfId }: Props) => {
   }
 
   return (
-    <div className='flex flex-col h-full bg-gray-100'>
+    <div className='flex flex-col h-full bg-gray-100 dark:bg-neutral-800'>
       {/* Message container */}
       <div
         ref={msgContainerRef}
@@ -76,8 +76,8 @@ const ChatLayout = ({ chatId, pdfId }: Props) => {
                 key={index}
                 className={`mb-4 p-2 rounded-lg relative overflow-hidden ${
                   skMsg % 2 == 0
-                    ? 'bg-gray-200 dark:bg-gray-200'
-                    : 'bg-gray-200 dark:bg-gray-200 ml-auto'
+                    ? 'bg-gray-200 dark:bg-neutral-400/30'
+                    : 'bg-gray-200 dark:bg-neutral-400/30 ml-auto'
                 } max-w-[90%] md:max-w-[70%]`}
               >
                 <div className='absolute inset-0 bg-gradient-to-r from-transparent via-gray-300 to-transparent animate-shimmer'></div>
@@ -95,7 +95,7 @@ const ChatLayout = ({ chatId, pdfId }: Props) => {
           <div
             key={index}
             className={`mb-4 p-2 rounded-lg ${
-              message.role === 'user' ? 'bg-blue-100 ml-auto' : 'bg-white'
+              message.role === 'user' ? 'bg-blue-100 dark:bg-blue-500/30 ml-auto' : 'bg-white dark:bg-neutral-300/30 '
             } max-w-[90%] md:max-w-[70%]`}
           >
             <ReactMarkdown>{message.content}</ReactMarkdown>
