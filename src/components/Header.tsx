@@ -36,7 +36,7 @@ export function Header () {
           <ModeToggle />
           <div className='w-full h-full flex justify-center items-center'>
             <SignedIn>
-              <UserButton />
+              <UserButton afterSignOutUrl="/" />
             </SignedIn>
           </div>
         </nav>

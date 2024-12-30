@@ -29,7 +29,7 @@ export default function RootLayout ({
 }>) {
   return (
     <ClerkProvider
-    afterSignOutUrl={'/'}
+    afterSignOutUrl={`https://askpdfpro.vercel.app/`}
     >
       <Providers>
         <html lang='en' suppressHydrationWarning>
