@@ -1,8 +1,10 @@
 'use client';
 import React, { useRef, useLayoutEffect } from 'react';
-import { useChat } from 'ai/react';
+import { Message, useChat } from 'ai/react';
 import { Loader, MessagesSquare, Send } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
+import { useQuery } from '@tanstack/react-query';
+import axios from 'axios';
 
 type Props = {
   pdfId: string;
@@ -10,6 +12,16 @@ type Props = {
 };
 
 const ChatLayout = ({chatId, pdfId }: Props) => {
+
+  const {data} = useQuery({
+    queryKey: ['chatId',chatId ],
+    queryFn: async()=> {
+      const response = await axios.post<Message[]>('/api/messages', {chatId})
+
+      return response.data
+    }
+  })
+  
   const {
     input,
     handleInputChange,
@@ -24,6 +36,7 @@ const ChatLayout = ({chatId, pdfId }: Props) => {
       pdfId,
       chatId,
     },
+    initialMessages: data || []
   });
 
   // Ref for the message container
@@ -31,6 +44,7 @@ const ChatLayout = ({chatId, pdfId }: Props) => {
 
   // Scroll to the bottom whenever messages are updated
   useLayoutEffect(() => {
+    console.log("messages from fe:", messages)
     if (msgContainerRef.current) {
       msgContainerRef.current.scrollTo({
         top: msgContainerRef.current.scrollHeight,
@@ -68,6 +82,10 @@ const ChatLayout = ({chatId, pdfId }: Props) => {
             <ReactMarkdown>{message.content}</ReactMarkdown>
           </div>
         ))}
+        <div>
+
+        {/* {messages.map((msg) => <div>{msg.content}</div>)} */}
+        </div>
         {isLoading && (
           <div className="flex items-center space-x-2">
             <Loader className="animate-spin w-4 h-4" />
