@@ -3,7 +3,8 @@ import { NextResponse } from 'next/server'
 import { PrismaClient } from '@prisma/client'
 import { auth } from '@clerk/nextjs/server'
 
-const hostURL = 'https://askpdfpro.vercel.app';
+// const hostURL = 'https://askpdfpro.vercel.app';
+const hostURL = process.env.HOST;
 const client = new PrismaClient()
 
 export async function POST (req: Request) {

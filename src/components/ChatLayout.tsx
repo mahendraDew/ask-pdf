@@ -6,9 +6,10 @@ import ReactMarkdown from 'react-markdown';
 
 type Props = {
   pdfId: string;
+  chatId: number;
 };
 
-const ChatLayout = ({ pdfId }: Props) => {
+const ChatLayout = ({chatId, pdfId }: Props) => {
   const {
     input,
     handleInputChange,
@@ -21,6 +22,7 @@ const ChatLayout = ({ pdfId }: Props) => {
     api: '/api/chat',
     body: {
       pdfId,
+      chatId,
     },
   });
 

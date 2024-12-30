@@ -9,3 +9,6 @@
 - https://sdk.vercel.ai/docs/ai-sdk-ui/chatbot
 - https://sdk.vercel.ai/docs/reference/ai-sdk-ui/use-chat#api
 - https://cloud.google.com/vertex-ai/generative-ai/docs/reference/nodejs/latest
+
+- useCompletion - https://sdk.vercel.ai/docs/ai-sdk-ui/completion#completion
+- Persistent Chat - https://sdk.vercel.ai/docs/ai-sdk-ui/storing-messages
