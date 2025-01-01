@@ -5,8 +5,8 @@ import React from 'react'
 
 export default async function page() {
   const { userId } = await auth()
-
-  if (!userId) {
+  const {sessionId} = await auth();
+  if (!userId || !sessionId) {
     return redirect('/')
   }
 

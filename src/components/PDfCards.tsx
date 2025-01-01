@@ -52,7 +52,7 @@ export default function PDfCards () {
       ) : (
         pdfs.map(pdf => (
           <Link key={pdf._id} href={`/chats/${pdf._id}`} className='w-full sm:w-64 h-80'>
-            <Button className='relative pdf-item w-full h-full rounded-lg cursor-pointer bg-gray-200 drop-shadow-md text-gray-400 text-sm md:text-base p-2 flex flex-col justify-between'>
+            <Button className='relative pdf-item w-full h-full rounded-lg cursor-pointer bg-gray-200 dark:bg-zinc-600 dark:hover:bg-zinc-400 dark:text-gray-100 dark:hover:text-gray-50 drop-shadow-md text-gray-400 text-sm md:text-base p-2 flex flex-col justify-between'>
               <p className='w-full text-wrap flex  justify-start items-start text-start'>
                 {pdf.filename}
               </p>

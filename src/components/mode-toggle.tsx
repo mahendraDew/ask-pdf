@@ -24,7 +24,7 @@ export default function ModeToggle() {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
     >
-      <Button variant="ghost" size="icon" onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}>
+      <Button variant="ghost" size="icon" onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')} className='rounded-full w-7 h-7'>
         {theme === 'dark' ? <SunIcon /> : <MoonIcon />}
       </Button>
     </motion.div>
