@@ -188,9 +188,9 @@ export function Header () {
                       <Button
                         variant={'default'}
                         className='mt-1 bg-transparent hover:bg-gray-300 text-gray-800  dark:text-gray-200 dark:hover:text-gray-900  px-4 py-2 text-sm w-full '
-                        onClick={() => {
-                          redirect('/')
-                        }}
+                        // onClick={() => {
+                        //   redirect('/')
+                        // }}
                       >
                         <span className='flex justify-left items-center gap-2'>
                           <LogOut /> Sign out
@@ -235,9 +235,9 @@ export function Header () {
                       <Button
                         variant={'default'}
                         className='mt-1 bg-transparent hover:bg-gray-300 text-gray-800  dark:text-gray-200 dark:hover:text-gray-900  px-4 py-2 text-sm w-full '
-                        onClick={() => {
-                          redirect('/')
-                        }}
+                        // onClick={() => {
+                        //   redirect('/')
+                        // }}
                       >
                         <span className='flex justify-left items-center gap-2'>
                           <LogOut /> Sign out
