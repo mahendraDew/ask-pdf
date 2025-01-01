@@ -8,7 +8,7 @@ import { SignOutButton, useUser } from '@clerk/nextjs'
 import Link from 'next/link'
 import { Button } from './ui/button'
 import ModeToggle from './mode-toggle'
-import { redirect } from 'next/navigation'
+// import { redirect } from 'next/navigation'
 
 export function Header () {
   const [isExpanded, setIsExpanded] = useState(false)
