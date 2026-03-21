@@ -11,7 +11,7 @@ export async function POST (req: Request) {
         }
     })
 
-    console.log("messages from be:", messages)
+    // console.log("messages from be:", messages)
 
     return NextResponse.json(messages)
 

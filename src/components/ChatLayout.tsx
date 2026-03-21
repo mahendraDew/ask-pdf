@@ -46,7 +46,7 @@ const ChatLayout = ({ chatId, pdfId }: Props) => {
 
   // Scroll to the bottom whenever messages are updated
   useLayoutEffect(() => {
-    console.log('messages from fe:', messages)
+    // console.log('messages from fe:', messages)
     if (msgContainerRef.current) {
       msgContainerRef.current.scrollTo({
         top: msgContainerRef.current.scrollHeight,

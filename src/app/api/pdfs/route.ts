@@ -9,7 +9,7 @@ export async function GET () {
   try {
     await connectToDatabase();
 
-    const pdfs = await PDFModel.find({userId: userId}).lean()
+    const pdfs = await PDFModel.find({userId: userId}).sort({ uploadedAt: -1 }).lean()
 
     return NextResponse.json(pdfs)
   } catch (error) {

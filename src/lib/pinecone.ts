@@ -5,7 +5,7 @@ import {
   Document,
   RecursiveCharacterTextSplitter
 } from '@pinecone-database/doc-splitter'
-import { PineconeRecord, RecordMetadata } from '@pinecone-database/pinecone'
+import { PineconeRecord, RecordId, RecordMetadata, RecordValues } from '@pinecone-database/pinecone'
 import { getEmbedding } from './embeddings'
 import md5 from 'md5'
 import { getPineconeClient } from './pinecone-config'
@@ -43,18 +43,57 @@ export async function loadPDFintoPinecone (fileId: string) {
     const vectors = await Promise.all(
       documents.flat().map(doc => embedDocument(doc))
     )
-
+    // console.log("vectors after flat: ", vectors)
+    // console.log("Vector example:", vectors[0])
+    // console.log("Values type:", typeof vectors[0])
+    // console.log("Values[0]:", vectors[0])
+    // console.log("Length:", vectors.length)
     //4 . push this vectors to pinecone db
-    const client = await getPineconeClient()
-    const pineconeIndex = client.Index('askpdf')
+    const pc = await getPineconeClient()
+    // const pineconeIndex = client.Index('askpdf')
+    // const pinecodeIndex  = await pc.createIndex({
+    //   name: 'askpdf-index',
+    //   vectorType: 'dense',
+    //   dimension: 3072,
+    //   metric: 'cosine',
+    //   spec: {
+    //     serverless: {
+    //       cloud: 'aws',
+    //       region: 'us-east-1'
+    //     }
+    //   },
+    //   deletionProtection: 'disabled',
+    //   tags: { environment: 'development' }, 
+    // });
+    const indexes = await pc.listIndexes()
+    if (!indexes.indexes?.some(i => i.name === "askpdf-index")) {
+      await pc.createIndex({
+          name: 'askpdf-index',
+          vectorType: 'dense',
+          dimension: 3072,
+          metric: 'cosine',
+          spec: {
+            serverless: {
+              cloud: 'aws',
+              region: 'us-east-1'
+            }
+          },
+          deletionProtection: 'disabled',
+          tags: { environment: 'development' }, 
+        });
+    }
+    const pineconeIndex = pc.index({name: "askpdf-index"});
+    
+    
     console.log('inserting vectors into pinecone')
     const namespace = convertToASCII(fileId)
+    // pc.index(indexName).namespace("ns1")
+    await pineconeIndex.namespace(namespace).upsert({records: vectors, namespace: namespace})
 
-    pineconeIndex.namespace(namespace).upsert(vectors)
 
     // vector inserted
     console.log('vector inserted successfully')
-    return documents[0]
+    return "vector inserted successfully";
   } catch (error) {
     console.error('Error processing PDF for Pinecone:', error)
   }
@@ -114,9 +153,10 @@ async function embedDocument (doc: Document) {
       values: embeddings,
       metadata: {
         text: doc.metadata.text,
-        pageNumber: doc.metadata.pageNumber
-      }
-    } as PineconeRecord<RecordMetadata>
+        pageNumber: doc.metadata.pageNumber as Number
+      } 
+    } as unknown as PineconeRecord<RecordMetadata>
+    
   } catch (error) {
     console.log('err embedding the doc ', error)
     throw error

@@ -30,7 +30,6 @@ async function page ({ params }: { params: Promise<{ id: string }> }) {
 
 
   const chats = await client.chats.findFirst({ where: { fileKey: pdfId, userId: userId } })
-
   if (!chats) {
     console.log('no chats so redirect!!!!', chats, '!!!!!userID:', userId)
     console.log('pdfID:', pdfId)
