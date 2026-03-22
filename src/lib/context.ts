@@ -1,7 +1,7 @@
 import { Pinecone, RecordValues } from '@pinecone-database/pinecone'
 import { convertToASCII } from './utils'
 import { getEmbedding } from './embeddings'
-import { ContentEmbedding } from '@google/genai'
+// import { ContentEmbedding } from '@google/genai'
 
 export async function getContext (query: string, fileKey: string) {
   console.log('getting the context')

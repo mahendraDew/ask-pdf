@@ -1,4 +1,4 @@
-import { Content, GoogleGenAI } from '@google/genai'
+// import { Content, GoogleGenAI } from '@google/genai'
 import { convertToModelMessages, streamText } from 'ai'
 import { google } from '@ai-sdk/google'
 // import { GoogleGenerativeAI } from '@google/generative-ai'
@@ -7,7 +7,7 @@ import { UIMessage } from '@ai-sdk/react'
 import dotenv from 'dotenv'
 import { getContext } from '@/lib/context'
 import { PrismaClient } from '@prisma/client'
-import { NextResponse } from 'next/server'
+// import { NextResponse } from 'next/server'
 dotenv.config()
 const client = new PrismaClient()
 
@@ -23,7 +23,7 @@ type MsgProps = {
 //   model: 'gemini-embedding-001',
 //   contents: text.replace(/\n/g, "")
 // });
-let fullText = ''
+// let fullText = ''
 
 export async function POST (req: Request) {
   try {
@@ -184,6 +184,7 @@ export async function POST (req: Request) {
     //   //   })
     //   // }
     // })
+    console.log("message ka len:",messages.length)
     const result = streamText({
       // model: google("gemini-3-pro-preview"),
       model: google('gemini-3.1-flash-lite-preview'),
@@ -198,9 +199,28 @@ export async function POST (req: Request) {
       messages: await convertToModelMessages(messages),
       async onFinish ({ text }) {
         // implement your own storage logic:
-        console.log('Text: ', text)
+        console.log('Text answer generated')
+        // console.log('Text: ', text)
         //TODO: 
         // make db request/
+        console.log("inserting user chat")
+        await client.messages.create({
+          data: {
+            content: lastUserQuery,
+            role: 'user',
+            chatId: chatId
+          }
+        })
+        //gemini message => {text}
+        // console.log('text: ', text )
+        console.log("inserting Sys chat ")
+        await client.messages.create({
+          data: {
+            content: text,
+            role: 'assistant',
+            chatId: chatId
+          }
+        })
       }
     })
     // console.log('result: ', result)
@@ -274,7 +294,7 @@ export async function POST (req: Request) {
     //     controller.close()
     //   }
     // })
-    return new Response(fullText)
+    // return new Response(fullText)
   } catch (error) {
     console.log('error in chat!', error)
   }

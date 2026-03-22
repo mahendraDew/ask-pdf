@@ -169,7 +169,7 @@ import { useEffect, useState } from 'react'
 import PDFRenderer from '@/components/PDFRenderer'
 
 import ResizableDivider from '@/components/ResizableDivider'
-import ChatLayout from './ChatLayout'
+// import ChatLayout from './ChatLayout'
 import ChatLayout2 from './ChatLayout2'
 
 type ChatProp = {

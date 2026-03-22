@@ -5,7 +5,7 @@ import {
   Document,
   RecursiveCharacterTextSplitter
 } from '@pinecone-database/doc-splitter'
-import { PineconeRecord, RecordId, RecordMetadata, RecordValues } from '@pinecone-database/pinecone'
+import { PineconeRecord, RecordMetadata } from '@pinecone-database/pinecone'
 import { getEmbedding } from './embeddings'
 import md5 from 'md5'
 import { getPineconeClient } from './pinecone-config'
@@ -107,7 +107,7 @@ async function fetchPDFFromDB (id: string): Promise<Buffer | null> {
 }
 
 async function extractTextFromPDF (pdfBuffer: Buffer) {
-  const blob = new Blob([pdfBuffer], { type: 'application/pdf' })
+  const blob = new Blob([new Uint8Array(pdfBuffer)], { type: 'application/pdf' })
 
   const loader = new PDFLoader(blob)
   const pages = (await loader.load()) as PDFPageProps[]
@@ -153,7 +153,7 @@ async function embedDocument (doc: Document) {
       values: embeddings,
       metadata: {
         text: doc.metadata.text,
-        pageNumber: doc.metadata.pageNumber as Number
+        pageNumber: doc.metadata.pageNumber as number
       } 
     } as unknown as PineconeRecord<RecordMetadata>
     

@@ -22,7 +22,7 @@ export async function GET (
       return NextResponse.json({ message: 'PDF not found' }, { status: 404 })
     }
 
-    return new NextResponse(pdf.data, {
+    return new Response(pdf.data as unknown as BodyInit, {
       headers: {
         'Content-Type': pdf.contentType,
         'Content-Disposition': `inline; filename="${pdf.filename}"`

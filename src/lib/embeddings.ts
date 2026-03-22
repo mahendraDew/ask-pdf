@@ -59,15 +59,11 @@ export async function getEmbedding (text: string): Promise<RecordValues> {
       contents: text.replace(/\n/g, "")
   });
 
-    // return result.embedding.values as number[]
-    //TODO: remove this tsignore
-    //@ts-ignore
-    // console.log( "new getembeddings: ", response.embeddings[0].values);
-    
-    // return response.embeddings;
-    //TODO: remove this tsignore
-    //@ts-ignore
-    return response.embeddings[0].values
+    const first = response.embeddings?.[0]
+    if (!first?.values?.length) {
+      throw new Error('Embedding API returned no embedding values')
+    }
+    return first.values
   } catch (error) {
     console.error('error in embedding!!!', error)
     throw error

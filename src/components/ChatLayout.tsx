@@ -2,12 +2,13 @@
 import React, { useRef, useLayoutEffect, useState, useEffect } from 'react'
 // import { Message, useChat } from 'ai/react'
 // import { Message } from 'ai/react'
-import { useChat, UIMessage } from '@ai-sdk/react'
+import { useChat } from '@ai-sdk/react'
 import { Loader, MessagesSquare, Send } from 'lucide-react'
-import ReactMarkdown from 'react-markdown'
+// import ReactMarkdown from 'react-markdown'
 import { useQuery } from '@tanstack/react-query'
 import axios from 'axios'
 import { DefaultChatTransport } from 'ai'
+import type { MessagesApiRow } from '@/types/messages-api'
 
 type Props = {
   pdfId: string
@@ -21,45 +22,14 @@ const ChatLayout = ({ chatId, pdfId }: Props) => {
   const { data } = useQuery({
     queryKey: ['chatId', chatId],
     queryFn: async () => {
-      const response = await axios.post<UIMessage[]>('/api/messages', {
+      const response = await axios.post<MessagesApiRow[]>('/api/messages', {
         chatId
       })
       setLoading(false)
       return response.data
     }
   })
-  // useEffect(() => {
-  //   if (data) {
-  //     setMessages(
-  //       data.map((msg: any) => ({
-  //         id: msg.id || crypto.randomUUID(),
-  //         role: msg.role,
-  //         parts: [{ type: 'text', text: msg.content }]
-  //       }))
-  //     )
-  //   }
-  // }, [data])
-  // const {
-  //   input,
-  //   handleInputChange,
-  //   handleSubmit,
-  //   messages,
-  //   isLoading,
-  //   reload,
-  //   error
-  // } = useChat({
-  //   api: '/api/chat',
-  //   body: {
-  //     pdfId,
-  //     chatId
-  //   },
-  //   initialMessages: data || []
-  // })
   const [input, setInput] = useState('')
-
-  // useEffect(() => {
-  //   sendMessage({ text: input.trim() })
-  // }, [input])
 
   const { sendMessage, messages, setMessages, status, regenerate, error } =
     useChat({
@@ -71,6 +41,18 @@ const ChatLayout = ({ chatId, pdfId }: Props) => {
         }
       })
     })
+
+  useEffect(() => {
+    if (data) {
+      setMessages(
+        data.map(msg => ({
+          id: String(msg.id),
+          role: msg.role,
+          parts: [{ type: 'text' as const, text: msg.content }]
+        }))
+      )
+    }
+  }, [data, setMessages])
 
   // Ref for the message container
   const msgContainerRef = useRef<HTMLDivElement | null>(null)
@@ -171,8 +153,10 @@ const ChatLayout = ({ chatId, pdfId }: Props) => {
           // }}
           onSubmit={e => {
             e.preventDefault()
-            handleKeyPress
-            setInput('')
+            if (input.trim()) {
+              sendMessage({ text: input })
+              setInput('')
+            }
           }}
           className='flex'
         >
