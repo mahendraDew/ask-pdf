@@ -10,7 +10,7 @@
     "postinstall": "prisma generate"
   },
   "dependencies": {
-    "@ai-sdk/google": "^1.0.12",
+    "@ai-sdk/google": "^3.0.52",
     "@ai-sdk/react": "^3.0.136",
     "@clerk/nextjs": "^6.9.6",
     "@google/genai": "^1.45.0",
@@ -28,7 +28,7 @@
     "@types/md5": "^2.3.5",
     "@types/mongoose": "^5.11.96",
     "@vercel/analytics": "^1.4.1",
-    "ai": "^4.0.22",
+    "ai": "^6.0.134",
     "axios": "^1.7.9",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",

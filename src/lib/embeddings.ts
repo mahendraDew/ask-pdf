@@ -37,7 +37,8 @@ import { GoogleGenAI } from "@google/genai";
 import { RecordValues } from "@pinecone-database/pinecone";
 import dotenv from 'dotenv'
 dotenv.config()
-const ai = new GoogleGenAI({apiKey: process.env.GEMINI_API_KEY!});
+// const ai = new GoogleGenAI({apiKey: process.env.GEMINI_API_KEY!});
+const ai = new GoogleGenAI({apiKey: process.env.GOOGLE_GENERATIVE_AI_API_KEY!});
 
 // const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!)
 // const model = genAI.getGenerativeModel({ model: 'text-embedding-004' })

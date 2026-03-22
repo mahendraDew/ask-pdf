@@ -1,10 +1,13 @@
 'use client'
-import React, { useRef, useLayoutEffect, useState } from 'react'
-import { Message, useChat } from 'ai/react'
+import React, { useRef, useLayoutEffect, useState, useEffect } from 'react'
+// import { Message, useChat } from 'ai/react'
+// import { Message } from 'ai/react'
+import { useChat, UIMessage } from '@ai-sdk/react'
 import { Loader, MessagesSquare, Send } from 'lucide-react'
 import ReactMarkdown from 'react-markdown'
 import { useQuery } from '@tanstack/react-query'
 import axios from 'axios'
+import { DefaultChatTransport } from 'ai'
 
 type Props = {
   pdfId: string
@@ -18,28 +21,56 @@ const ChatLayout = ({ chatId, pdfId }: Props) => {
   const { data } = useQuery({
     queryKey: ['chatId', chatId],
     queryFn: async () => {
-      const response = await axios.post<Message[]>('/api/messages', { chatId })
+      const response = await axios.post<UIMessage[]>('/api/messages', {
+        chatId
+      })
       setLoading(false)
       return response.data
     }
   })
+  // useEffect(() => {
+  //   if (data) {
+  //     setMessages(
+  //       data.map((msg: any) => ({
+  //         id: msg.id || crypto.randomUUID(),
+  //         role: msg.role,
+  //         parts: [{ type: 'text', text: msg.content }]
+  //       }))
+  //     )
+  //   }
+  // }, [data])
+  // const {
+  //   input,
+  //   handleInputChange,
+  //   handleSubmit,
+  //   messages,
+  //   isLoading,
+  //   reload,
+  //   error
+  // } = useChat({
+  //   api: '/api/chat',
+  //   body: {
+  //     pdfId,
+  //     chatId
+  //   },
+  //   initialMessages: data || []
+  // })
+  const [input, setInput] = useState('')
 
-  const {
-    input,
-    handleInputChange,
-    handleSubmit,
-    messages,
-    isLoading,
-    reload,
-    error
-  } = useChat({
-    api: '/api/chat',
-    body: {
-      pdfId,
-      chatId
-    },
-    initialMessages: data || []
-  })
+  // useEffect(() => {
+  //   sendMessage({ text: input.trim() })
+  // }, [input])
+
+  const { sendMessage, messages, setMessages, status, regenerate, error } =
+    useChat({
+      transport: new DefaultChatTransport({
+        api: '/api/chat',
+        body: {
+          pdfId,
+          chatId
+        }
+      })
+    })
 
   // Ref for the message container
   const msgContainerRef = useRef<HTMLDivElement | null>(null)
@@ -57,7 +88,7 @@ const ChatLayout = ({ chatId, pdfId }: Props) => {
 
   const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
-      handleSubmit()
+      sendMessage({ text: input })
     }
   }
 
@@ -95,14 +126,21 @@ const ChatLayout = ({ chatId, pdfId }: Props) => {
           <div
             key={index}
             className={`mb-4 p-2 rounded-lg ${
-              message.role === 'user' ? 'bg-blue-100 dark:bg-blue-500/30 ml-auto' : 'bg-white dark:bg-neutral-300/30 '
+              message.role === 'user'
+                ? 'bg-blue-100 dark:bg-blue-500/30 ml-auto'
+                : 'bg-white dark:bg-neutral-300/30 '
             } max-w-[90%] md:max-w-[70%]`}
           >
-            <ReactMarkdown>{message.content}</ReactMarkdown>
+            {message.parts.map((part, index) =>
+              part.type === 'text' ? <span key={index}>{part.text}</span> : null
+            )}
+            {/* <ReactMarkdown>{message.parts.map((part, index) =>
+            part.type === 'text' ? <span key={index}>{part.text}</span> : null,
+          )}</ReactMarkdown> */}
           </div>
         ))}
         <div>{/* {messages.map((msg) => <div>{msg.content}</div>)} */}</div>
-        {isLoading && (
+        {(status === 'submitted' || status === 'streaming') && (
           <div className='flex items-center space-x-2'>
             <Loader className='animate-spin w-4 h-4' />
           </div>
@@ -112,7 +150,7 @@ const ChatLayout = ({ chatId, pdfId }: Props) => {
             <div>An error occurred.</div>
             <button
               type='button'
-              onClick={() => reload()}
+              onClick={() => regenerate()}
               className='text-blue-500 underline'
             >
               Retry
@@ -123,14 +161,29 @@ const ChatLayout = ({ chatId, pdfId }: Props) => {
 
       {/* Input form */}
       <div className='p-4 border-t'>
-        <form onSubmit={handleSubmit} className='flex'>
+        <form
+          // onSubmit={e => {
+          //   e.preventDefault()
+          //   if (input.trim()) {
+          //     sendMessage({ text: input })
+          //     setInput('')
+          //   }
+          // }}
+          onSubmit={e => {
+            e.preventDefault()
+            handleKeyPress
+            setInput('')
+          }}
+          className='flex'
+        >
           <input
             type='text'
             value={input}
-            onChange={handleInputChange}
+            onChange={e => setInput(e.target.value)}
             onKeyPress={handleKeyPress}
             className='flex-grow border rounded-l-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500'
             placeholder='Ask any question'
+            disabled={status !== 'ready'}
           />
           <button
             type='submit'

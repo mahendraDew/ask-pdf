@@ -170,6 +170,7 @@ import PDFRenderer from '@/components/PDFRenderer'
 
 import ResizableDivider from '@/components/ResizableDivider'
 import ChatLayout from './ChatLayout'
+import ChatLayout2 from './ChatLayout2'
 
 type ChatProp = {
     userId: string
@@ -225,7 +226,9 @@ export default function DashboardPage({
           style={{ width: isMobile ? '100%' : `${100 - leftWidth}%` }} 
           className="h-[calc(50vh-3.5rem)] md:h-[calc(100vh-(4.5rem))] border rounded-lg"
         >
-          <ChatLayout chatId={chat.id} pdfId={pdfId} />
+          {/* <ChatLayout chatId={chat.id} pdfId={pdfId} /> */}
+          <ChatLayout2 chatId={chat.id} pdfId={pdfId} />
+
         </div>
       </main>
     </div>
