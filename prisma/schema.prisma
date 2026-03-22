@@ -15,7 +15,7 @@ datasource db {
 
 enum Role {
   user
-  system
+  assistant
 }
 
 model Chats {
