@@ -113,8 +113,8 @@ export default function ChatLayout2 ({ chatId, pdfId }: Props) {
             <div
               className={`mb-4 p-2 rounded-lg ${
                 message.role === 'user'
-                  ? 'bg-blue-100 dark:bg-blue-500/30 ml-auto'
-                  : 'bg-white dark:bg-neutral-300/30 '
+                  ? 'bg-blue-100 dark:bg-blue-600/25 ml-auto'
+                  : 'bg-white dark:bg-neutral-600/25 '
               } max-w-[90%] md:max-w-[70%]`}
             >
               {message.parts.map((part, index) => {
